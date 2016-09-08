@@ -1,5 +1,5 @@
-Ò»¡¢
-
+ 
+//date£º 20160908
 //Poj 1330
 //#include"stdafx.h"
 #include<iostream>
