@@ -1,7 +1,7 @@
 # algorithms
 
-# 开始时间： 20161001  
+# Start Time：20161001
 
-# 整理我大二学过的算法和现在研二碰到的一些算法
+# review some algorithm  
 
-# 语言不限，大多是C++和Matlab  
+# C++ and matlab 
