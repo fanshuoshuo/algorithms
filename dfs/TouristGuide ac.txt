@@ -1,0 +1,121 @@
+//Code here
+#include <iostream>
+#include <vector>
+#include <map>
+#include <cmath>
+#include <algorithm>
+#include <cstring>
+using namespace std;
+class TouristGuide{
+  private:
+   int n;
+   int sum;
+   int R;
+   map <string,int> index;
+   vector<string> place;
+   bool mark[110];
+   vector< vector<string> > road;
+   vector <string> ans;
+  public:
+   void initial(int N);
+   void read();
+   void computering();
+   void dfs(int );
+   void outResult();
+}; 
+void TouristGuide::initial(int N){
+    n=N;
+    sum=0;
+    ans.clear();
+    place.clear();
+    place.resize(n);
+    road.clear();
+    road.resize(n);
+    index.clear();
+}
+void TouristGuide::read(){
+    string str;
+    for(int i=0;i<n;i++){
+       cin>>str;
+       index[str]=0;
+       place[i]=str;
+    }
+    sort(place.begin(),place.end());
+    cin>>R;
+    int num=0;
+    for(map<string ,int> ::iterator it=index.begin();it!=index.end();it++)
+       it->second=num++;
+    string a,b;
+    for(int i=0;i<R;i++){
+       cin>>a>>b;
+       road[index[a]].push_back(b);
+       road[index[b]].push_back(a);
+    }
+    
+}
+void TouristGuide::computering(){
+     int cnt; bool flag=false;
+     int Num;
+     Num=0;
+     memset(mark,1,sizeof(mark));
+     for(int i=0;i<n;i++){
+         if(mark[i]){
+            dfs(i);Num++;
+         }
+     } 
+   //  cout<<Num<<endl; 
+     for(int i=0;i<n;i++){
+        cnt=0;
+        memset(mark,1,sizeof(mark));
+        mark[i]=0; 
+      //  cout<<"i  "<<i<<endl;        // 每次假定删除一个节点 
+        for(int k=0;k<n;k++){
+	           if(mark[k]){  
+                //  cout<<"k  "<<k<<endl; 
+	              dfs(k);
+	              cnt++;
+	           }
+	           if(cnt>Num){      //如果连通分量增加
+	               ans.push_back(place[i]);
+	               break;
+	           }
+	         //  for(int i=0;i<n;i++)
+               //   cout<<mark[i]<<"  "<<endl; 
+        } 
+        
+     }
+}
+void TouristGuide::outResult(){
+  static int cnt=1;
+  if(cnt!=1)
+     cout<<endl;
+  cout<<"City map #"<<cnt<<": "<<ans.size()<<" camera(s) found"<<endl;
+  sort( ans.begin(),ans.end() ); 
+  for( int i=0;i<ans.size();i++){
+    cout<<ans[i]<<endl;
+  }
+  cnt++;
+}
+void TouristGuide::dfs(int k ){
+   if(mark[k]==1){
+       mark[k]=0;
+       for(int i=0;i<road[k].size();i++){
+           string s=road[k][i];
+           int t=index[s];
+               dfs(t);
+            
+       }
+     }
+}
+int main(){
+    TouristGuide tr;
+    int n;
+    while(cin>>n&&n){
+       tr.initial(n);
+       tr.read();
+       tr.computering(); 
+      tr.outResult();             
+    }
+   // system("pause");
+    return 0;
+}

@@ -1,0 +1,24 @@
+/*
+DFS pseudocode
+from <<introduction to algorithms>>
+*/
+
+DFS(G)
+	for each vertex u belong to G.V
+		u.color=WHITE                  //未访问标记
+		u.pre=NIL
+	time=0
+	for each vertex u belong to G.V
+		if u.color==WHITE
+			DFS_VIST(G,u)
+DFS_VIST(G,u)
+	time++
+	u.d=time
+	u.color=GRAY
+	for each v belong to Adj[v]
+		if v.color==WHITE
+			v.pre=u
+			DFS_VIST(G,v)
+	u.color=BLACK
+	time++
+	u.f=time
