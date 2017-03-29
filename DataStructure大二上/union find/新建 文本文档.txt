@@ -1,0 +1,101 @@
+//Code here
+
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include <map>
+#include <string>
+using namespace std;
+const int maxn=30010;
+class unionFind{
+private:
+	map <char,char>  father;
+	map <char,int >rank;
+	int n,m;
+	char max;
+	int  ans;
+public:
+	void initial();
+	void readCase();
+	void computing();
+	void outResult();
+	int find(char x);
+	void Union(char x,char y);
+};
+
+int unionFind::find(char x){
+    if(x!=father[x]) father[x]=find(father[x]);
+    return father[x];
+}
+
+void unionFind::Union(char x,char y){
+    x=find(x);
+    y=find(y);
+    if(x==y) return ;
+    if(rank[x]>rank[y]){
+        father[y]=x;
+        rank[x]+=rank[y];
+    }
+    else{
+        rank[y]+=rank[x];
+        father[x]=y;
+    }
+}
+
+void unionFind::initial(){
+	
+   
+}
+
+void unionFind::readCase(){
+    char a,b;
+    string str;
+    while(getline(cin,str)) {
+        if(str[0]<'A'||str[0]>'Z')
+           break;
+        if(str.length()==1){
+               max=str[0];
+               cout<<max<<endl;
+               int p='a';
+               int q=max;
+               char c='a';
+               for(;p<=q;p++,c++){
+                  cout<<c<<endl;
+                  father[c]=c;
+               }
+        }
+        else{
+        Union(str[0],str[1]);
+        }
+   
+		
+	}
+}
+
+void unionFind::computing(){
+    int cnt=0;
+	for(char a='a';a<=max;a++){
+        if(father[a]=a) cnt++;
+    }
+    cout<<cnt<<endl;
+}
+
+void unionFind::outResult(){
+}
+
+int main(){
+    int t;
+    int num=1;
+    unionFind test;
+    scanf("%d\n\n",&t);
+    while(t--){
+    	test.initial();
+    	test.readCase();
+    	test.computing();
+    	test.outResult();
+    	if(t!=1)
+    	   cout<<endl;
+    	num++;
+    }
+    return 0;
+}

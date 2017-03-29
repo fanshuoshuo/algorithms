@@ -1,0 +1,115 @@
+//Code here
+//Code here
+#include <vector>
+#include <iostream>
+#include <cmath>
+#include <cstdio>
+#include <string>
+#include <cstring>
+using namespace std;
+vector< vector<int> >  vec(17);
+class PrimeRingProblem{
+    private:
+     int n;
+     int visited[17];
+     vector<int >  ring;
+     vector< vector<int> >  ans;
+     void backtracking(int k);
+    public :
+    void  initional(int);
+    void  readcase();
+    void  computering();
+    void  outResult();
+};
+ void  PrimeRingProblem::initional(int n){
+       memset(visited,0,sizeof(visited));//已在ring中 标为1
+       this->n=n;
+       ring.clear();
+       ans.clear();
+ }
+ void   PrimeRingProblem::readcase(){  
+    for(int i=1;i<vec.size();i++){
+       for(int k=0;k<vec[i].size();k++){
+         cout<<vec[i][k]<<" ";
+       }
+       cout<<endl;
+    }      
+ }
+ void   PrimeRingProblem::computering(){
+   ring.push_back(1);
+   visited[1]=1;
+   backtracking(1);  
+      
+ }
+ void  PrimeRingProblem::backtracking(int k){
+     if(ring.size()==n+1&&ring[n]==1){
+        ans.push_back(ring);
+     }else if(ring.size()<n+1){
+           for(int i=0,m=k;i<vec[m].size();i++){
+               int tmp=vec[m][i];
+               if((!visited[tmp]&&tmp<=n)||(tmp==1&&ring.size()==n) ){
+                   ring.push_back(tmp);
+                   visited[tmp]=1;
+                   backtracking(tmp);
+                   int t=ring[ring.size()-1];
+                   if(t!=1)
+                   visited[t]=0;
+                   ring.pop_back();
+
+               }
+           }
+     }
+ 
+ }
+ void  PrimeRingProblem::outResult(){
+    static int cnt=1;
+    cout<<"Case "<<cnt++<<":"<<endl;
+    for(int i=0;i<ans.size();i++){
+       for(int k=0;k<ans[i].size()-1;k++){
+           cout<<ans[i][k];
+           if(k!=n-1)
+             cout<<" ";
+           
+        }
+        cout<<endl;
+    }
+ 
+  }
+bool isPrime(int i,int j){
+    int k=i+j;
+    bool bl=true;
+    if(k==2){
+      return false;//尽管2 是质数，但是本题不允许出现1和1 相邻
+    }
+    else if(k%2==0)
+         return false;
+    for(int m=3;m<=int(sqrt(double(k)));m+=2){
+       if(k%m==0){
+           return false ;
+       }
+    }
+    return true;
+ }
+int main(){
+   PrimeRingProblem prp;
+   int n;
+   for(int i=1;i<=16;i++){
+      for(int j=1;j<=16;j++){
+         if(isPrime(i,j)){
+             vec[i].push_back(j);
+         }
+      }
+   }
+   int i=0;
+   while(cin>>n&&(n)){
+    if(i!=0)
+      cout<<endl;
+      prp.initional(n);
+      prp.computering();
+      prp.outResult();  
+      i++;
+           
+  }
+  return 0;
+}
+    

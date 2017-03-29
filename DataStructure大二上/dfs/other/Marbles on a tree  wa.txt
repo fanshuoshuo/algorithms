@@ -1,0 +1,87 @@
+/* Marbles on a tree*/
+ 
+#include <iostream>
+#include <vector>
+#include <map>
+#include <cmath>
+#include <algorithm>
+#include <cstring>
+const int MAX=10010; 
+using namespace std;
+struct Vertex{
+        int v;
+        int num;
+        int move;     
+        int step;
+        //vector< vector<int> >  children;  
+        
+}; 
+class Marbles{
+ private:
+        int n; 
+        bool isRoot[MAX];
+        Vertex  vertex[MAX];
+        vector< vector<int> >  children; 
+        int ans;
+ public:
+        void initial(int n);
+        void read();
+        void computering(); 
+        int  dfs(int root);
+};
+ void Marbles::initial(int n){
+      this->n=n; 
+      ans=0;
+      children.clear(); 
+      children.resize(n+1);
+      memset(isRoot,true,sizeof(isRoot));
+ } 
+ void Marbles::read(){
+      int v,num;
+      for(int i=1;i<=n;i++){
+          cin>>v>>num;
+          vertex[v].v=v;
+          vertex[v].num=num;  
+          int t;
+          int tmp;
+          cin>>t;
+          children[v].clear();
+          for(int i=0;i<t;i++){
+             cin>>tmp;
+             isRoot[tmp]=false;
+             children[v].push_back(tmp);
+          }
+      }
+ } 
+ void Marbles::computering(){
+    for(int i=1;i<=n;i++){
+       if(isRoot[i])
+          ans=dfs(i);
+          break;
+    }
+    cout<<ans<<endl;
+      
+ } 
+ int  Marbles::dfs(int rt){
+    vertex[rt].move=vertex[rt].num-1;
+    vertex[rt].step=0;
+    for(int i=0;i<children[rt].size();i++){
+        dfs(children[rt][i]);
+        int child=children[rt][i];
+        vertex[rt].move+=vertex[child].move;
+        vertex[rt].step+=abs(vertex[child].move)+vertex[child].step;
+        
+    }
+    return  vertex[rt].step;
+ }
+int main(){
+    int n; 
+    Marbles M; 
+    while(cin>>n&&n){
+         M.initial(n);
+         M.read();
+         M.computering(); 
+    } 
+    system("pause"); 
+    return 0; 
+} 

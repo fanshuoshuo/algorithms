@@ -1,0 +1,4 @@
+UVa10077 Stern-Brocot
+UVa10706 Number Sequence
+UVa10539 Almost Prime Numbers
+HDU4282  A very hard mathematic problem

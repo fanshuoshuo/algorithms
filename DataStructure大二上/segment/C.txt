@@ -1,0 +1,119 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+using namespace std;
+const int maxn = 100010;
+struct tree{
+    int l,r;
+    long long int sum;
+    long long int lz;
+}a[maxn*4];
+class ASimpleProblemwithIntegers{
+private:
+  int N;
+  int Q;
+  long long int ant;
+  int v[maxn];
+public:
+  void initial(int n , int m);
+  void readcase();
+  void out();
+  void build( int l, int r,int k);
+  long long int querry(int l , int r, int k);
+  void pushdown(int k);
+  void add(int l , int r ,int c, int k);
+};
+void ASimpleProblemwithIntegers::initial(int n , int m){
+  N = n;
+  Q = m;
+  ant = 0;
+  memset(v , 0 ,sizeof(v));
+};
+void ASimpleProblemwithIntegers::build(int l,int r,int k){
+    a[k].l=l;
+    a[k].r=r;
+    a[k].lz = 0;
+    if(l == r){
+      a[k].sum = v[l];
+    }else{
+      int mid = (l + r)/2;
+      build(l , mid ,2*k);
+      build(mid+1 , r,2*k+1);
+      a[k].sum =a[2*k].sum + a[2*k+1].sum;
+    }
+}
+void ASimpleProblemwithIntegers::pushdown(int k){
+  if(a[k].r != a[k].l){
+    a[2*k].sum += a[k].lz*(a[k<<1].r - a[k<<1].l + 1);
+    a[2*k+1].sum += a[k].lz*(a[k<<1|1].r - a[k<<1|1].l + 1);
+    a[2*k].lz += a[k].lz;
+    a[2*k+1].lz += a[k].lz;
+    a[k].lz = 0;
+  }
+}
+void ASimpleProblemwithIntegers::add(int l , int r ,int c, int k){
+  if(l <= a[k].l && a[k].r <= r){
+    a[k].sum += c*(a[k].r-a[k].l+1);
+    a[k].lz += c;
+  }else{
+    pushdown(k);
+    int mid = (a[k].l+a[k].r)/2;
+    if(mid >= r){
+      add(l , r , c ,2*k);
+    }else if(mid < l){
+      add(l , r , c ,2*k+1);
+    }else{
+      add(l , mid ,c ,2*k);
+      add(mid+1 , r , c,2*k+1);
+    }
+    a[k].sum = a[2*k].sum+a[2*k+1].sum;
+  }
+}
+long long ASimpleProblemwithIntegers::querry(int l , int r, int k){
+  if(l <= a[k].l && a[k].r <= r){
+    return a[k].sum;
+  }else{
+    pushdown(k);
+    int mid = (a[k].l+a[k].r)/2;
+    if(mid >= r){
+      return querry(l , r ,2*k);
+    }else if(mid < l){
+      return querry(l , r ,2*k+1);
+    }else{
+      return querry(l, mid ,2*k)+querry(mid+1, r ,2*k+1);
+    }
+  }
+}
+void ASimpleProblemwithIntegers::readcase(){
+  for(int i = 1;i <= N;i++){
+    scanf("%d",&v[i]);
+  }
+  build(1 , N ,1);
+  char t;
+  int l , r , c;
+  getchar();
+  while(Q--){
+    scanf("%c",&t);
+    if(t == 'Q'){
+      scanf("%d%d",&l,&r);
+      ant = querry(l , r ,1);
+      out();
+    }else {
+      scanf("%d%d%d",&l,&r,&c);
+      add(l , r, c, 1);
+    }
+    getchar();
+  }
+};
+void ASimpleProblemwithIntegers::out(){
+  cout << ant <<endl;
+}
+int main(){
+  ASimpleProblemwithIntegers A;
+  int n , m;
+  while(cin >> n >>m){
+    A.initial(n , m);
+    A.readcase();
+  }
+  return 0;
+}

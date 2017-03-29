@@ -1,0 +1,52 @@
+#include<iostream>
+#include<cstring>
+#include<cstdio>
+#include<cstdlib>
+#include<string>
+using namespace std;
+
+const int maxp=30;
+
+int SumF[maxp];
+int Case;
+int find(int x){
+    if(SumF[x]!=x)
+         SumF[x]=find(SumF[x]);
+    return SumF[x];
+}
+
+void merge(int a,int b)
+{
+     int fx=find(a); 
+     int fy=find(b);
+     if(fx!=fy) SumF[fx]=fy;
+}
+      
+int main(){
+   int n,i,j,count;
+   scanf("%d\n\n",&Case);
+   //while(Case--){
+   for(int l=0;l<Case;l++){
+       if(l>0) cout<<endl;
+       string st;
+       while(getline(cin,st)){
+            if(st[0]<'A'||st[0]>'Z') break;
+            if(st.length()<=1){
+                n=st[0]-'A'+1;
+                count=0;
+                for(int k=1;k<=n;k++)
+                   SumF[k]=k;
+            } 
+            else{
+              i=st[0]-'A'+1;
+              j=st[1]-'A'+1;
+              merge(i,j);
+            }
+       }
+       for(int k=1;k<=n;k++)
+            if(k==SumF[k])
+                count++;
+       printf("%d\n",count);
+  }
+  return 0;
+}

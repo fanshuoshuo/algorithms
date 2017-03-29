@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <stdio.h>
+#include <ctype.h>
+#include <string>
+using namespace std;
+int main(){
+   int N;
+   vector<string> vec;  
+   map<char,int> Map;
+   cin>>N;
+   vec.resize(N);
+   char c=getchar();
+   for(int i=0;i<N;i++){
+     getline(cin,vec[i]);
+     }
+   for(int i=0;i<N;i++){
+       for(int j=0;j<vec[i].size();j++){
+           if(isalpha(vec[i][j])){
+               if(islower(vec[i][j]))
+                   vec[i][j]-=32;
+               Map[vec[i][j]]++;
+           } 
+                         
+       }
+   }
+   
+   int max=0;
+   map<char,int> ::iterator it,iter;
+   while(!Map.empty()){
+	   max=0;
+	   for(it=Map.begin();it!=Map.end();it++){
+	         if(max<it->second)
+	               max=it->second;
+	   }
+   
+       for(it=Map.begin();it!=Map.end();){
+	        if(it->second==max){
+	            cout<<it->first<<" "<<it->second<<endl;
+	            iter=it;
+	            it++;
+	            Map.erase(iter);
+	        }
+	        else{
+                 it++;
+                 }
+	   }
+   }
+   return 0;
+}
+
+
+

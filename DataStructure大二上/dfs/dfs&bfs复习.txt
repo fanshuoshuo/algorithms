@@ -1,0 +1,9 @@
+A UVa260   Il Gioco dell'X
+B UVa469   Wetlands of Florida
+C UVa10596 Morning Walk
+D UVa10926 How Many Dependencies?
+E UVa567   Risk
+F UVa10067 Playing with Wheels
+G UVa10102 The Path in the Colored Field
+H UVa383   Shipping Routes
+I UVa10009 All Roads Lead Where?

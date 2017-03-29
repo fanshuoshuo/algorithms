@@ -1,0 +1,73 @@
+#include <iostream>
+#include <cstring>
+#include <cstdio>
+using namespace std;
+
+const int maxn=15100;
+
+struct tree{
+   int l,r;
+   int sum;
+};
+
+tree Line[33000*4];
+
+int sum[maxn];
+
+void buildTree(int l,int r,int k){
+     Line[k].l=l;
+     Line[k].r=r;
+     if(l==r) Line[k].sum=0;
+     else{
+          int mid=(l+r)/2;
+          buildTree(l,mid,2*k);
+          buildTree(mid+1,r,2*k+1);
+          Line[k].sum=Line[2*k].sum+Line[2*k+1].sum;
+     }
+}
+void add(int l, int r, int k) { 
+    int mid = (Line[k].l+Line[k].r)/2; 
+    if(Line[k].l == l && Line[k].r == r) { 
+        Line[k].sum++; 
+        return ; 
+    } 
+    if(l>=mid+1)  add(l, r, 2*k+1); 
+    else if(r<=mid)  add(l, r, 2*k); 
+    else { 
+         add(l, mid, 2*k); 
+         add(mid+1, r, 2*k+1); 
+    }
+    Line[k].sum = Line[2*k].sum+Line[2*k+1].sum; 
+} 
+//0  100 mid 3200;
+int query(int l,int r,int k){
+      if(l<=Line[k].l&&Line[k].r<=r){
+           return Line[k].sum;
+      }
+      else{
+             int mid=(Line[k].l+Line[k].r)/2;
+             if(l>=mid+1) return query(l,r,2*k+1);
+             else if(r<=mid) return query(l,r,2*k);
+             else {
+                   return query(l,mid,2*k)+query(mid+1,r,2*k+1);
+             }
+       }
+}
+
+int main(){
+   int n=0;
+   while(scanf("%d",&n)!=EOF){
+         memset(sum,0,sizeof(sum));
+         buildTree(0,33000,1);
+         int x=0,y=0;
+         for(int i=0;i<n;i++){
+               scanf("%d%d",&x,&y);
+               sum[query(0,x,1)]++;
+               add(x,x,1);
+         }
+         for(int i=0;i<n;i++){
+               cout<<sum[i]<<endl;
+         }
+   }
+   return 0;
+}

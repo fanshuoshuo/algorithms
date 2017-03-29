@@ -1,0 +1,109 @@
+//Code here
+
+#include<iostream>
+#include<map>
+#include<string>
+#include<algorithm>
+#include <cstring>
+using namespace std;
+const int MAX = 500;
+int father[MAX];
+struct City{
+  string c1;
+  string c2;
+  int w;
+}city[MAX*400];
+void build(int x){
+  for(int i = 0;i < x;i++){
+    father[i] = i;
+  }
+}
+int find(int x){
+  if(x != father[x]){
+    father[x] = find(father[x]);
+  }
+  return father[x];
+}
+void united_set(int x , int y){
+  int xx = find(x);
+  int yy = find(y);
+  if(xx != yy){
+    father[xx] = yy;
+  }
+}
+bool cmp(City one , City two){ return one.w>two.w;}  //最大生成树  
+class HeavyCargo{
+private:
+  map<string, int> cNum;
+  int ans;
+  int N;
+  int R;
+  string start;
+  string end;
+public:
+  void initial();
+  void readcase(int n , int r);
+  void computing();
+  void out(int n);
+};
+void HeavyCargo::initial(){
+  cNum.clear();
+  ans = 1000000;
+  start.clear();
+  end.clear();
+}
+void HeavyCargo::readcase(int n , int r){
+  build(n);
+  N = n;
+  R = r;
+  int wei;
+  string str1 , str2;
+  map<string, int>::iterator it;
+  for(int i = 0;i < r;i++){
+    cin >> str1 >> str2 >> wei;
+    city[i].c1 = str1;
+    city[i].c2 = str2;
+    city[i].w = wei;
+    
+   cNum [str1]=cNum[str2]=0;
+   }
+  cin >> start >> end;
+  sort(city , city+r, cmp);
+}
+void HeavyCargo::computing(){
+//  map 给城市编号
+  int i = 0;
+  for(map<string, int>::iterator iter = cNum.begin();iter != cNum.end();iter++){
+    iter -> second = i;
+    i++;
+  }
+  
+  for(i = 0;i < R;i++){
+    if(find(cNum[city[i].c1]) != find(cNum[city[i].c2])){// 从最大的边开始添加   
+      if(ans > city[i].w){                              
+        ans = city[i].w;
+      }
+      
+      united_set(cNum[city[i].c1] , cNum[city[i].c2]);
+    }
+    if(find(cNum[start]) == find(cNum[end])){      //能保证吗？  
+      break;
+    }
+  }
+}
+void HeavyCargo::out(int n){
+  cout << "Scenario #" << n <<endl;
+  cout << ans << " tons" << endl << endl;
+}
+int main(){
+  HeavyCargo H;
+  int n , r , count = 1;
+  while(cin >> n >> r && (n||r)){
+    H.initial();
+    H.readcase(n , r);
+    H.computing();
+    H.out(count);
+    count++;
+  }
+  return 0;
+}

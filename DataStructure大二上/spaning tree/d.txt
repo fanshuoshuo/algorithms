@@ -1,0 +1,63 @@
+#include<iostream>
+#include<cstring>
+#include<string>
+#include<sstream>
+#include<cstdio>
+using namespace std;
+const int MAX = 50000;
+int father[MAX];
+int cap,yes,no,flag;
+void initial(){
+    yes = 0;
+    no = 0;
+	for(int i = 1; i <= cap; i++){
+		father[i] = i;
+	}
+}
+int Find(int x){
+	if(father[x] == x){
+		return x;
+	}
+	else{
+		return (father[x] = Find(father[x]));
+	}
+}
+void Output(){
+	if(flag){
+		cout << endl;
+	}
+	printf("%d,%d\n",yes,no);
+}
+void Union(int x,int y){
+	int a = Find(x);
+	int b = Find(y);
+	if(a != b){
+		father[a] = b;
+	}
+}
+int main(){
+	int t;
+	cin >> t;
+	while(t--){
+		char ch;
+		cin >> cap;
+		getchar();
+		initial();
+		string st;
+		while(getline(cin,st)&&(st.length()>0)){
+			stringstream ss(st);
+			int x,y;
+			ss >> ch >> x >> y;
+			if(ch == 'c'){
+				Union(x,y);
+			}
+			else{
+				if(Find(x) == Find(y)) yes++;
+				else no++;
+			}
+		}
+		Output();
+		flag = 1;
+	}
+	return 0;
+}

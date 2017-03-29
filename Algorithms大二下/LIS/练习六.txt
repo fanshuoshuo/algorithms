@@ -1,0 +1,6 @@
+A UVa497   Strategic Defense Initiative
+B UVa231   Testing the Catcher
+C UVa437   The Tower of Babylon
+D UVa481   What Goes Up
+E UVa10534 Wavio Sequence
+F UVa10154 Weights and Measures

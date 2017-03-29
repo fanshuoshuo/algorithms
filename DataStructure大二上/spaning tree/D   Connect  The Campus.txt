@@ -1,0 +1,110 @@
+#include <iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+#include<cstring>
+using namespace std;
+const int MAX=760;
+int father[10000];
+void build(int n){
+  for(int i=0;i<=n;i++)
+     father[i]=i; 
+}
+int find(int x){
+    if(father[x] == x){
+		return x;
+	}
+	return ( father[x]=find(father[x]));
+}
+void virUnion(int x,int y){
+    int xx=find(x);
+    int yy=find(y);
+    if(xx!=yy)  { 
+       father[xx]=yy; 
+     
+    } 
+    
+}
+int realUnion(int x,int y){
+    int xx = find(x);
+	int yy = find(y);
+	if(xx!= yy){
+		father[xx] = yy;
+		return 1;
+	}
+	return 0;
+} 
+struct Edge{ 
+    int x;
+    int y;
+    int w;
+};
+Edge edge[300000];
+bool cmp(Edge a,Edge b){
+	return a.w<b.w;
+}
+class ConnectTheCampus{
+   private:
+      int n;
+      int M;
+      int cnt;
+      double ans; 
+      int point[MAX][2];
+   public :
+      void initial(int );
+      void readcase();
+      void computering();
+}; 
+void ConnectTheCampus::initial(int num){
+    n=num;
+    ans=0;
+    cnt=0; 
+    memset(point,0,sizeof(point)); 
+    build(n); 
+} 
+void ConnectTheCampus::readcase(){
+    for(int i = 1; i <= n; i++){
+		cin >> point[i][0] >> point[i][1];
+	}
+	cin>>M;
+	int x,y;
+    for(int i = 0; i < M; i++){
+		cin >> x >> y;
+		virUnion(x,y);
+	//	cout<<father[x]<<" "<<father[y]<<endl; 
+	} 
+	int k=0;
+	for(int i = 1; i < n; i++){
+		for(int j = i+1; j <= n;j++){
+			edge[k].w = (point[i][0]-point[j][0])*(point[i][0]-point[j][0])+(point[i][1]-point[j][1])*(point[i][1]-point[j][1]);
+			edge[k].x = i;
+			edge[k].y = j;
+			k++; 
+		}
+	}
+	cnt=k;  
+ }
+void ConnectTheCampus::computering(){
+     sort(edge,edge+cnt,cmp);
+     for(int i = 0; i <cnt; i++){
+		int  a = realUnion(edge[i].x,edge[i].y);
+		if(a){
+			ans+= sqrt(edge[i].w);
+		}
+	}
+  	printf("%.2f\n",ans);
+	
+}
+int main(){
+    ConnectTheCampus C;
+    int n;
+    int k=0;
+    while(cin>>n){
+      C.initial(n);
+      C.readcase();
+      C.computering();
+      k++;
+    }
+   //system("pause");
+    return 0;
+}

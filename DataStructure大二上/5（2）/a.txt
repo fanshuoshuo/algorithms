@@ -1,0 +1,83 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <cstdio>
+using namespace std;
+class GiocoDell{
+   private:
+     int r;
+     vector<string>  board;
+     bool whiteWon ;
+     void dfs(int ,int);
+   public:
+     void initional(int );
+     void readcase();
+     void computering();
+     void outResult();
+};
+
+void GiocoDell::initional(int n){
+   r=n+2;
+   board.resize(r);
+   whiteWon=false;
+}
+void GiocoDell::readcase(){
+  string str;
+  for(int i=1;i<r-1;i++){
+     cin>>str;
+     board[i]='S'+str+'S';
+  }
+  for(int j=0;j<r;j++){
+    board[0].push_back('S');          //*******
+    board[r-1].push_back('S');      //???push back
+  }
+  // for(int i=0;i<r;i++)
+  //cout<<board[i]<<endl;
+  
+}
+void GiocoDell::computering(){
+  for(int i=1;i<r-1;i++){
+     if(board[i][1]=='w'){
+         dfs(i,1);
+     }
+  }
+  
+  for(int i=1;i<r-1;i++){
+    if(board[i][r-2]=='W'){
+       whiteWon=true;
+       break;
+    }  
+  }
+}
+void GiocoDell::dfs(int i,int j){
+  int di[6]={-1,-1,0,0,1,1};
+  int dj[6]={-1,0,-1,1,0,1};
+  if(board[i][j]=='w'){
+     board[i][j]='W';
+     for(int k=0;k<6;k++){
+        dfs(i+di[k],j+dj[k]);
+     }
+  }
+}
+void GiocoDell::outResult(){
+  static int i=1;
+  if(whiteWon){
+     cout<<i<<" W"<<endl;
+  }
+  else 
+   cout<<i<<" B"<<endl;
+   i++;
+}
+int main(){
+   int N;
+   GiocoDell GD;
+   while(cin>>N&&N){
+     GD.initional(N);
+     GD.readcase();
+     GD.computering();
+     GD.outResult();
+   }
+   system("pause");
+   return 0;
+   
+}

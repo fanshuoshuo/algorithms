@@ -1,0 +1,53 @@
+//Code here
+#include <iostream>
+#include <vector>
+#include <map>
+#include <string>
+using namespace std;
+class MoringWalk{
+  private:
+  int N;
+  int R;
+  vector< vector<int> >  roadMap;
+  bool flag;
+  public:
+   bool readcase();
+   void computering();
+   void outResult();
+};
+bool  MoringWalk::readcase(){
+   flag=true;
+   roadMap.clear();
+   cin>>N>>R;
+   roadMap.resize(N);
+   int a,b;
+   for(int i=0;i<R;i++){
+    cin>>a>>b;
+    roadMap[a].push_back(b);
+    roadMap[b].push_back(a);
+   }
+   
+return !cin.eof();
+}
+void  MoringWalk::computering(){
+   
+   for(int i=0;i<R;i++){
+    if(roadMap[i].size()%2!=0)
+      flag=false;
+   }
+ 
+}
+void  MoringWalk::outResult(){
+  if(flag)
+    cout<<"Possible"<<endl;
+  else
+    cout<<"Not Possible"<<endl;
+}
+int main(){ 
+  MoringWalk  MW;
+  while(MW.readcase()){
+     MW.computering();
+     MW.outResult();
+  }
+  return 0;
+}

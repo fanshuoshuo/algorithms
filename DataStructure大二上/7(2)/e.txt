@@ -1,0 +1,39 @@
+#include<iostream> 
+#include<algorithm> 
+#include<cstdio> 
+#include<cmath> 
+#define MAXN 510 
+using namespace std; 
+int arr[MAXN], n; 
+ 
+void solve(){ 
+    sort(arr, arr+n); 
+    if(n&1){ //如果是奇数，一定是正中间那个数 
+        int mid=arr[(n-1)>>1]; 
+        int sum=0; 
+        for(int i=0; i<n; ++i) 
+            sum += abs(arr[i]-mid); 
+        printf("%d\n",sum); 
+    } 
+    else{ //如果是偶数，那么是中间两个之和的一半 
+        int mid=(arr[(n-2)>>1]+arr[n>>1])/2; 
+        int sum=0; 
+        for(int i=0; i<n; ++i) 
+            sum += abs(arr[i]-mid); 
+        printf("%d\n", sum); 
+    } 
+} 
+1 2 3 4 5 6 7
+ 
+int main(){ 
+    int T; 
+    scanf("%d",&T); 
+    while(T--){ 
+        scanf("%d",&n); 
+        for(int i=0; i<n; ++i) 
+            scanf("%d",&arr[i]); 
+        solve(); 
+    } 
+    return 0; 
+} 
+

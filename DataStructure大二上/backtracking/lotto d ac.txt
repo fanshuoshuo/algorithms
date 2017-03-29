@@ -1,0 +1,83 @@
+//Code here
+//Code here
+#include <vector>
+#include <iostream>
+using namespace std;
+class Lotto{
+    private:
+     int k;
+     vector<int >  num;
+     vector<int >  row;
+     vector< vector<int> >  ans;
+     void backtracking(int m);
+    public :
+    void  initional();
+    void  readcase(int);
+    void  computering();
+    void  outResult();
+};
+ void  Lotto::initional(){
+        row.clear();
+        num.clear();
+        ans.clear();
+ 
+       
+ }
+ void   Lotto::readcase(int n){
+    k=n;
+    int tmp;
+    for(int i=0;i<k;i++){
+    cin>>tmp;
+    num.push_back(tmp);
+    
+    }
+    /*for(int i=0;i<k;i++){
+      cout<<num[i]<<" ";
+    }
+    cout<<endl;*/
+  
+ }
+ void   Lotto::computering(){
+    backtracking(0);
+   
+ }
+ void  Lotto::backtracking(int m){ 
+     if(row.size()==6){
+          ans.push_back(row);
+     } else if(row.size()<6){
+            for(int i=m;i<k;i++){
+                 row.push_back(num[i]);
+                 backtracking(i+1);
+                 row.pop_back();
+            }
+     }
+ }
+ void  Lotto::outResult(){ 
+     for(int i=0;i<ans.size();i++){
+          for(int j=0;j<ans[i].size();j++){
+             cout<<ans[i][j];
+             if(j!=5)
+               cout<<" ";
+          }
+          cout<<endl;
+     } 
+  }
+ 
+int main(){
+   Lotto L;
+   int n;
+   int i=0;
+   while(cin>>n&&n){
+      if(i!=0)
+      cout<<endl;
+      L.initional();
+      L.readcase(n);
+      L.computering();
+      L.outResult();
+      i++;
+      
+  }
+  
+      return 0;
+}
+    

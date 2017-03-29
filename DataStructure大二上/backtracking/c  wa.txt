@@ -1,0 +1,110 @@
+
+#include <iostream>
+#include <vector>
+#include <map>
+#include <string>
+#include <cstring>
+#include <cmath>
+#include  <cstdio>
+using namespace std;
+struct  point{
+  int x;
+  int y;
+  friend bool operator ==(point a,point b){return (a.x==b.x&&a.y==b.y);}
+};
+class Getting_in_line{
+   private:
+      double min;
+      int num;
+      int visited[12];
+      vector<point>  data;
+      vector<point>  road;
+      vector<point>  ans;
+      void backtracking(int );
+      double dis(vector<point> r);
+   public :
+    void initional(int );
+    void readcase();
+    void computering();
+    void outResult();
+    
+};
+void Getting_in_line::initional(int n){
+   memset(visited,0,sizeof(visited));
+   num=n;
+   data.clear();
+   data.resize(num);
+   road.clear();
+   min=1000000;
+   
+}
+void Getting_in_line::readcase(){
+   point p;
+   for(int i=0;i<num;i++){
+   cin>>p.x>>p.y;
+   data[i]=p;
+   }
+}
+void Getting_in_line::computering(){
+  road.push_back(data[0]);
+  visited[0]=1;
+  backtracking(0);
+ 
+}
+void Getting_in_line::outResult(){
+    cout<<"**********************************************************"<<endl;
+    static int cnt=1;
+    cout<<"Network #"<<cnt++<<endl;
+    double sum,tmp;
+    sum=tmp=0;
+    for(int i=0;i<ans.size()-1;i++)   {
+      tmp=sqrt( double( (ans[i+1].x-ans[i].x)* (ans[i+1].x-ans[i].x) +(ans[i+1].y-ans[i].y)*(ans[i+1].y-ans[i].y)  ) )+16;
+      printf("Cable requirement to connect (%d,%d) to (%d,%d) is %.2f feet.\n",ans[i].x,ans[i].y,ans[i+1].x,ans[i+1].y,tmp);
+      sum+=tmp;    
+    }
+    printf("Number of feet of cable required is %.2f.\n",sum);
+}
+void Getting_in_line::backtracking(int k){
+  if(road.size()==num&&dis(road)<min){
+     ans=road;
+     min=dis(road);   
+  }else if(dis(road)<min){ 
+      for(int i=0;i<num;i++){
+          if(i!=k&&!visited[i]){
+              road.push_back(data[i]);
+              visited[i]=1;
+              backtracking(i);
+              point last=road[road.size()-1];//         5    55   
+              for(int j=0;j<num;j++){
+                 if(data[j]==last){
+                     visited[j]=0;break;
+                 }
+              }
+              road.pop_back();
+          }
+      }     
+  }
+}
+double Getting_in_line ::dis(vector<point> r){
+  double len=0;
+  if(r.size()==0)
+     return 0;
+  else {
+      for(int i=0;i<r.size()-1;i++){
+        len=len+sqrt( double( (r[i+1].x-r[i].x)* (r[i+1].x-r[i].x) +(r[i+1].y-r[i].y)*(r[i+1].y-r[i].y) )  )+16;
+      }
+  }  
+  return len;
+}
+int main(){
+  Getting_in_line  Gil;
+  int n;
+  while(cin>>n&&n){
+     Gil.initional(n);
+     Gil.readcase();
+     Gil.computering();
+     Gil.outResult();
+  }
+  //system("pause");
+  return 0;
+}

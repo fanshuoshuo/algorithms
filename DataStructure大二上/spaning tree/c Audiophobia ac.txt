@@ -1,0 +1,115 @@
+//Code here
+//Code here
+
+#include<iostream>
+#include<map>
+#include<string>
+#include<algorithm>
+#include <cstring>
+#include <vector>
+using namespace std;
+const int MAX = 500;
+int father[MAX];
+struct City{
+  int x;
+  int y;
+  int w;
+}city[MAX*400];
+void build(int x){
+  for(int i = 0;i <=x;i++){
+    father[i] = i;
+  }
+}
+int find(int x){
+  if(x != father[x]){
+    father[x] = find(father[x]);
+  }
+  return father[x];
+}
+void united_set(int x , int y){
+  int xx = find(x);
+  int yy = find(y);
+  if(xx != yy){
+    father[xx] = yy;
+  }
+}
+bool cmp(City one , City two){ return one.w<two.w;}  //最大生成树  
+class Audiophobia{
+private:
+  int C;
+  int S;
+  int Q;
+  int que[10005][2];
+  vector<int > ans;
+public:
+  void initial();
+  void readcase(int , int ,int);
+  void computing();
+  void out();
+};
+void Audiophobia::initial(){
+  ans.clear();
+}
+void Audiophobia::readcase(int c , int s,int q){
+  C=c;
+  S = s;
+  Q = q;
+  int a,b,we;
+  for(int i = 0;i < s;i++){
+    cin >> a>>b >> we;
+    city[i].x = a;
+    city[i].y = b;
+    city[i].w = we;
+ }
+  for(int i=0;i<Q;i++){
+    cin>>que[i][0]>>que[i][1];
+  }
+
+}
+void Audiophobia::computing(){
+  sort(city , city+S, cmp);
+  static int cnt=1; 
+  if(cnt>1)
+     cout<<endl;
+   cout << "Case #" << cnt++ <<endl;
+  for(int k=0;k<Q;k++){
+      build(C);
+      int tmp=0;
+      int flag=true;
+	  for(int i = 0;i < S;i++){
+		    if(find(city[i].x) != find(city[i].y)){// 从最大的边开始添加   
+		      if(tmp < city[i].w){                              
+		        tmp = city[i].w;
+		      }
+		      united_set(city[i].x ,city[i].y);
+		    }
+		    if(find(que[k][0]) == find(que[k][1])){      //能保证吗？ 
+		     cout<<tmp<<endl;
+		     flag=false;
+		      break;
+		    }
+	  }
+	  if(flag)
+	    cout<<"no path"<<endl;
+  }
+}
+void Audiophobia::out(){
+ 
+  
+
+}
+int main(){
+  Audiophobia Au;
+  int c,s,q;
+  while(cin>>c>>s>>q){
+    if(c==0&&s==0&&q==0)//   c==q==s==0?
+      break;
+     
+    Au.initial();
+    Au.readcase(c,s,q);
+    Au.computing();
+    Au.out();
+    
+  }
+  return 0;
+}

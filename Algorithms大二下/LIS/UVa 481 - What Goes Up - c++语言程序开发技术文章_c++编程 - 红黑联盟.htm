@@ -1,0 +1,466 @@
+<!DOCTYPE html PUBLIC "-//W3C//dtD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/dtD/xhtml1-transitional.dtd">
+<!-- saved from url=(0041)http://www.2cto.com/kf/201211/171587.html -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=GBK">
+
+<link rel="stylesheet" href="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/article.css" type="text/css">
+
+<link href="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/dialog.css" rel="stylesheet" type="text/css">
+<title>UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟</title>
+<meta name="keywords" content="UVa,,481">
+<meta name="description" content="题目：最大上升子序列。分析：dp、lis、二分、单调队列。LIS的O(nlogn)算法。此算法，利用单调队列+二分优化。单调队列里的元素Q[i]为，到目前为止、长度为i的LIS中最小的结束元素。运行过程中，如果当前元素小于...">
+<script charset="utf-8" async="" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/logAdvanced.js"></script><script charset="utf-8" async="" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/log.js"></script><script charset="utf-8" async="" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/cf.js"></script><script charset="utf-8" async="" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/cc.js"></script><script type="text/javascript" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/jquery.min.js"></script>
+<script type="text/javascript" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/jquery.sgallery.js"></script>
+<script type="text/javascript" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/search_common.js"></script>
+<script type="text/javascript" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/m.js"></script>
+<script type="text/javascript" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/json.js"></script>
+<script language="javascript" type="text/javascript" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/dialog.js"></script>
+<link href="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/bdsstyle.css" rel="stylesheet" type="text/css"><script src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/logger.js"></script><link type="text/css" rel="stylesheet" href="chrome-extension://cpngackimfmofbokmjmljamhdncknpmg/style.css"><script type="text/javascript" charset="utf-8" src="chrome-extension://cpngackimfmofbokmjmljamhdncknpmg/page_context.js"></script></head>
+
+<body screen_capture_injected="true"><div style="position: absolute; "><object id="_GPL_swf" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="1" height="1"><param name="movie" value="http://contentcache-a.akamaihd.net/items/it/swf/f.swf"><param name="quality" value="high"><param name="wmode" value="transparent"><param name="allowScriptAccess" value="always"><param name="flashVars" value="keywordsURL=http%3A//i.trkjmp.com/kwd%3Fc%3DOjo6d3d3LjJjdG8uY29tOnotMTExMy00MzU0Ng%253D%253D%26cb%3D_GPL.items.a652c.displayKeywords&amp;keywords=uva%20481%7Cwhat%20goes%20up%7C2012-11-28%7Cnlogn%7Cint%7Cvoid%20output%7Cif%7Cprintf%7Cwhile%7Cint%20mid%7Celse%7Creturn%7Cint%20main%7Cint%20count%7Cscanf%7Ceof%7Cint%20tail%7Cfor%7Cint%20id%7C%E6%82%A8%E7%9A%84%E5%85%B3%E6%B3%A8%E5%92%8C%E5%BB%BA%E8%AE%AE%E6%98%AF%E6%88%91%E4%BB%AC%E5%89%8D%E8%A1%8C%E7%9A%84%E5%8F%82%E8%80%83%E5%92%8C%E5%8A%A8%E5%8A%9B%7C%E7%9B%B8%E5%85%B3%E6%96%87%E7%AB%A0%7C%E5%9B%BE%E6%96%87%E6%8E%A8%E8%8D%90%7C329%7C328%7C284%7C195%7C185%7C150%7C135%7C127%7C%E7%89%88%E6%9D%83%E6%89%80%E6%9C%89%7Cloading"><!--[if !IE]> <--> <object id="_GPL_swf" data="http://contentcache-a.akamaihd.net/items/it/swf/f.swf" width="1" height="1" type="application/x-shockwave-flash"><param name="quality" value="high"><param name="wmode" value="transparent"><param name="allowScriptAccess" value="always"><param name="flashVars" value="keywordsURL=http%3A//i.trkjmp.com/kwd%3Fc%3DOjo6d3d3LjJjdG8uY29tOnotMTExMy00MzU0Ng%253D%253D%26cb%3D_GPL.items.a652c.displayKeywords&amp;keywords=uva%20481%7Cwhat%20goes%20up%7C2012-11-28%7Cnlogn%7Cint%7Cvoid%20output%7Cif%7Cprintf%7Cwhile%7Cint%20mid%7Celse%7Creturn%7Cint%20main%7Cint%20count%7Cscanf%7Ceof%7Cint%20tail%7Cfor%7Cint%20id%7C%E6%82%A8%E7%9A%84%E5%85%B3%E6%B3%A8%E5%92%8C%E5%BB%BA%E8%AE%AE%E6%98%AF%E6%88%91%E4%BB%AC%E5%89%8D%E8%A1%8C%E7%9A%84%E5%8F%82%E8%80%83%E5%92%8C%E5%8A%A8%E5%8A%9B%7C%E7%9B%B8%E5%85%B3%E6%96%87%E7%AB%A0%7C%E5%9B%BE%E6%96%87%E6%8E%A8%E8%8D%90%7C329%7C328%7C284%7C195%7C185%7C150%7C135%7C127%7C%E7%89%88%E6%9D%83%E6%89%80%E6%9C%89%7Cloading"></object> <!----> <!--[endif]----> </object></div><div style="position: absolute; top: 0px; left: 0px; width: 1px; height: 1px; z-index: 2147483647; " id="_GPL_e6a00_parent_div"><object type="application/x-shockwave-flash" id="_GPL_e6a00_swf" data="http://contentcache-a.akamaihd.net/items/e6a00/storage.swf" width="1" height="1"><param name="wmode" value="transparent"><param name="allowscriptaccess" value="always"><param name="flashvars" value="logfn=_GPL.items.e6a00.log&amp;onload=_GPL.items.e6a00.onload&amp;onerror=_GPL.items.e6a00.onerror&amp;LSOName=gpl"></object></div><iframe style="display: none; " frameborder="0"></iframe><div id="bdshare_s"><iframe id="bdsIfr" style="position:absolute;display:none;z-index:9999;" frameborder="0"></iframe><div id="bdshare_l" style="display: none; "><div id="bdshare_l_c"><h6>分享到</h6><ul><li><a href="http://www.2cto.com/kf/201211/171587.html#" class="bds_mshare mshare">一键分享</a></li><li><a href="http://www.2cto.com/kf/201211/171587.html#" class="bds_qzone qqkj">QQ空间</a></li><li><a href="http://www.2cto.com/kf/201211/171587.html#" class="bds_tsina xlwb">新浪微博</a></li><li><a href="http://www.2cto.com/kf/201211/171587.html#" class="bds_baidu bdsc">百度搜藏</a></li><li><a href="http://www.2cto.com/kf/201211/171587.html#" class="bds_renren rrw">人人网</a></li><li><a href="http://www.2cto.com/kf/201211/171587.html#" class="bds_tqq txwb">腾讯微博</a></li><li><a href="http://www.2cto.com/kf/201211/171587.html#" class="bds_bdxc bdxc">百度相册</a></li><li><a href="http://www.2cto.com/kf/201211/171587.html#" class="bds_kaixin001 kxw">开心网</a></li><li><a href="http://www.2cto.com/kf/201211/171587.html#" class="bds_tqf txpy">腾讯朋友</a></li><li><a href="http://www.2cto.com/kf/201211/171587.html#" class="bds_tieba bdtb">百度贴吧</a></li><li><a href="http://www.2cto.com/kf/201211/171587.html#" class="bds_douban db">豆瓣网</a></li><li><a href="http://www.2cto.com/kf/201211/171587.html#" class="bds_tsohu shwb">搜狐微博</a></li><li><a href="http://www.2cto.com/kf/201211/171587.html#" class="bds_bdhome bdhome">百度新首页</a></li><li><a href="http://www.2cto.com/kf/201211/171587.html#" class="bds_sqq sqq">QQ好友</a></li><li><a href="http://www.2cto.com/kf/201211/171587.html#" class="bds_thx thx">和讯微博</a></li><li><a href="http://www.2cto.com/kf/201211/171587.html#" class="bds_more">更多...</a></li></ul><p><a href="http://www.2cto.com/kf/201211/171587.html#" class="goWebsite">百度分享</a></p></div></div></div>
+<div class="line_top_box">
+	<dl class="top_box_left">
+		<dd class="left_logo"><a href="http://www.2cto.com/"></a></dd>
+		<dd class="left_menu_link">
+													<a class="Channel" href="http://www.2cto.com/News/">资讯</a>&nbsp;|&nbsp;
+													<a class="Channel" href="http://www.2cto.com/Article/">安全</a>&nbsp;|&nbsp;
+													<a class="Channel" href="http://bbs.2cto.com/">论坛</a>&nbsp;|&nbsp;
+													<a class="Channel" href="http://www.2cto.com/Soft/">下载</a>&nbsp;|&nbsp;
+													<a class="Channel" href="http://book.2cto.com/">读书</a>&nbsp;|&nbsp;
+													<a class="Channel" href="http://www.2cto.com/kf/">程序开发</a>&nbsp;|&nbsp;
+													<a class="Channel" href="http://www.2cto.com/database/">数据库</a>&nbsp;|&nbsp;
+													<a class="Channel" href="http://www.2cto.com/os/">系统</a>&nbsp;|&nbsp;
+													<a class="Channel" href="http://www.2cto.com/net/">网络</a>&nbsp;|&nbsp;
+													<a class="Channel" href="http://www.2cto.com/ebook/">电子书</a>&nbsp;|&nbsp;
+													<a class="Channel" href="http://www.2cto.com/zz/">站长学院</a>&nbsp;|&nbsp;
+													<a class="Channel" href="http://www.2cto.com/ym/">源码</a>&nbsp;|&nbsp;
+													<a class="Channel" href="http://www.2cto.com/QQ/">QQ</a>&nbsp;|&nbsp;
+													<a class="Channel" href="http://space.2cto.com/">专栏</a>&nbsp;|&nbsp;
+													<a class="Channel" href="http://www.2cto.com/px/">考试</a>&nbsp;|&nbsp;
+													<a class="Channel" href="http://www.2cto.com/shouce/">手册</a>&nbsp;|&nbsp;
+											</dd>
+	</dl>
+</div>
+<div class="line_top_lmbox">
+	<dl class="lmpic"></dl>
+	<dl class="lmlinkbox"><dd>
+										<a class="Channel" href="http://www.2cto.com/kf/web/">Web开发</a>|
+							<a class="Channel" href="http://www.2cto.com/kf/ware/">软件开发</a>|
+							<a class="Channel" href="http://www.2cto.com/kf/safe/">安全编程</a>|
+							<a class="Channel" href="http://www.2cto.com/kf/yidong/">移动开发</a>|
+							<a class="Channel" href="http://www.2cto.com/kf/qita/">其他综合</a>|
+								</dd></dl>
+	<dl class="LoginBox"><dd><script type="text/javascript">document.write('<iframe src="http://www.2cto.com/index.php?m=member&c=index&a=mini&forward='+encodeURIComponent(location.href)+'&siteid=1" allowTransparency="true"  width="150" height="32" frameborder="0" scrolling="no"></iframe>')</script><iframe src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/index(1).htm" allowtransparency="true" width="150" height="32" frameborder="0" scrolling="no"></iframe></dd></dl>
+</div>
+<div class="divline8"></div>
+<div class="tadv">
+
+<a target="_blank" href="http://vip.2cto.com/"><img src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/980-80.gif" width="980" height="90"></a>
+<!-- 广告位：顶部banner -->
+<script type="text/javascript">BAIDU_CLB_fillSlot("298612");</script><script charset="utf-8" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/ecom"></script><div style="padding-top:0px;width:980px;margin:auto;padding-bottom:0px;clear:both;overflow:hidden">
+<a style="margin-right:4px" target="_blank" href="http://www.baidu.com/cb.php?c=IgF_pyfqnWR1rjnLP0KYTjYk0A7b5HmYP1f1PfKbuHYdrjm3P1m0TAq15Hc4rjmkn6K15ynsP1I9Pj0Yn1TYrjw-rjn0uZfqnHnvPj6LPH0znsKdThsqpZwYTjCEQLILIz4CpZP9uhR8mvqV0ZFb5Hc0mhYqn0KsTWYs0ZNGujYkPHTdPH0L0AqGujYdrH00mv-b5HR3r0KEIv3qPHTs0APzm1YYn1fYPs"><img src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/n1.jpg" width="320" height="60"></a>
+<a style="margin-right:4px" target="_blank" href="http://www.baidu.com/cb.php?c=IgF_pyfqnWR1rjnLPfKYTjYk0A7b5HmYP1f1PfKbuHYdrjm3P1m0TAq15Hc4rjmkn6K15ynsP1I9Pj0Yn1TYrjw-rjn0uZfqnHnvPj6LPH0znsKdThsqpZwYTjCEQLILIz4CUv4Cuyb8mvqV0ZFb5Hc0mhYqn0KsTWYs0ZNGujYkPHTdPH0L0AqGujYdrH00mv-b5HR3r0KEIv3qPHTs0APzm1Yzrjf1Pf"><img src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/n2.jpg" width="320" height="60"></a>
+<a target="_blank" href="http://www.baidu.com/cb.php?c=IgF_pyfqnWR1rjnLP6KYTjYk0A7b5HmYP1f1PfKbuHYdrjm3P1m0TAq15Hc4rjmkn6K15ynsP1I9Pj0Yn1TYrjw-rjn0uZfqnHnvPj6LPH0znsKdThsqpZwYTjCEQLILIz4kuAw_XAm8mvqVQLI-m6KzujYz0AFV5H00TZcqn0KdpyfqnHRLPHRsPsKEpyfqPHbs0APGujYdrj60ULI85HRLn0KWThnqnHbsPWf"><img src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/n3.jpg" width="320" height="60"></a>
+</div>
+
+<div style="padding-top:0px;width:980px;margin:auto;padding-bottom:0px;clear:both;overflow:hidden">
+<a target="_blank" href="http://www.baidu.com/cb.php?c=IgF_pyfqn1DsrHDYPfKYTjYk0A7b5HmYP1f1PfKbuHYdrjm3P1m0TAq15Hc4rjmkn6K15ynsP1I9Pj0Yn1TYrjw-rjn0uZfqnHnvPj6LPH0znsKdThsqpZwYTjCEQLILIz3zmLwEQhPEUiqsuy-3Iy30Thfqn6KBUHYs0ZKz5H00Iy-b5HDdP1RdnjT0Uv-b5HR4n0KWpyfqPH630AqLUWYdP100mLFW5Hm1nW04"><img src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/xc.jpg" width="980" height="60"></a>
+</div>
+
+</div>
+
+
+<div class="divline8"></div>
+<div class="it165_box">
+	<div class="box_left">
+		
+		<dl class="box_p">
+			<dd class="pRight"><a href="http://www.2cto.com/">首页</a><span> &gt; </span><a href="http://www.2cto.com/kf/">程序开发</a> &gt; <a href="http://www.2cto.com/kf/ware/">软件开发</a> &gt; <a href="http://www.2cto.com/kf/ware/cpp/">C++</a> &gt;  正文</dd>
+			<form name="search" target="_blank" action="http://www.2cto.com/index.php" method="get">
+			<dd class="pRSearch">
+					<input type="hidden" name="m" value="search">
+					<input type="hidden" name="c" value="index">
+					<input type="hidden" name="a" value="init">
+					<input type="hidden" name="typeid" value="1" id="typeid">
+					<input type="hidden" name="siteid" value="1" id="siteid">
+					<input name="Submit1" type="submit" value=" "></dd>
+					<dd class="pRKeyWork"><input id="Keyword" name="q" type="text"></dd>
+			</form>
+			</dl>
+		<dl class="box_t"><dd>UVa 481 - What Goes Up</dd></dl>
+																										<dl class="box_INFO">
+			<dd class="frinfo line_blue">2012-11-28 08:35:54  &nbsp;&nbsp;&nbsp;&nbsp;<a style="font-weight:bold;padding:5px 0px 5px 20px;background:url(&#39;http://www.2cto.com/statics/images/icon/user_comment.png&#39;) left center no-repeat" href="http://www.2cto.com/kf/201211/171587.html#comment_iframe">我来说两句&nbsp;</a>&nbsp;&nbsp;  &nbsp;&nbsp;  作者：mobius_strip</dd>
+			<dd class="frsize line_blue">
+			<span id="favorite">
+				<a href="javascript:;" onclick="add_favorite(&#39;UVa 481 - What Goes Up&#39;);" class="t6">收藏</a>
+			</span>&nbsp;&nbsp;
+				<a target="_blank" href="http://www.2cto.com/index.php?m=member&c=content&a=publish&modid=1&siteid=1"><img border="0" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/dl.jpg">我要投稿</a>
+			</dd>
+			
+		</dl>
+		<dl class="box_body" id="fontzoom"><dd id="Article">
+		<p>题目：最大上升子序列。</p>
+<p>分析：dp、lis、二分、单调队列。LIS的O(nlogn)算法。此算法，利用单调队列+二分优化。单调队列里的元素Q[i]为，到目前为止、长度为i的LIS中最小的结束元素。运行过程中，如果当前元素小于队尾元素，则可以和前面的构成LIS，直接加入队尾，否则替换之前的长度相同的LIS的结尾元素，使对应位置上的元素变小，由于队列满足单调性，所以利用二分查找提高效率。例如：序列为：{1，3，2，3}，则计算过程Q为：{1}，{1，3}，{1，2}，{1，2，3}。这样做是因为，如果{1,3}可以构成LIS的前缀串，那么{1,2}必然可以构成LIS的前缀传，并且可以接纳更多的后缀。 <a href="http://www.2cto.com/">www.2cto.com</a></p>
+<p>注意：数据规模较大O(n^2)算法会TLE、求的是最后的LIS利用单调队列直接满足。</p>
+<p>[cpp]&nbsp;<br>
+#include &lt;stdio.h&gt;&nbsp;<br>
+#include &lt;stdlib.h&gt;&nbsp;<br>
+#include &lt;string.h&gt;&nbsp;<br>
+&nbsp;<br>
+int data[ 100000 ];&nbsp;<br>
+int length[ 100000 ];&nbsp;<br>
+int front[ 100000 ];&nbsp;<br>
+int Q[ 100000 ];&nbsp;<br>
+&nbsp;<br>
+void output( int v )&nbsp;<br>
+{&nbsp;<br>
+&nbsp;&nbsp;&nbsp; if ( front[v] )&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; output( front[v] );&nbsp;<br>
+&nbsp;&nbsp;&nbsp; printf("%d\n",data[v]);&nbsp;<br>
+}&nbsp;<br>
+&nbsp;<br>
+int bs( int r, int v )&nbsp;<br>
+{&nbsp;<br>
+&nbsp;&nbsp;&nbsp; int l = 1;&nbsp;<br>
+&nbsp;&nbsp;&nbsp; while ( l &lt; r ) {&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int mid = (l+r)&gt;&gt;1;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if ( data[Q[mid]] &lt; v )&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; l = mid+1;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else r = mid;&nbsp;<br>
+&nbsp;&nbsp;&nbsp; }&nbsp;<br>
+&nbsp;&nbsp;&nbsp; return r;&nbsp;<br>
+}&nbsp;<br>
+&nbsp;<br>
+int main()&nbsp;<br>
+{&nbsp;<br>
+&nbsp;&nbsp;&nbsp; int count = 1;&nbsp;<br>
+&nbsp;&nbsp;&nbsp; while ( scanf("%d",&amp;data[count]) != EOF )&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; count ++;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp; int tail = 0;&nbsp;<br>
+&nbsp;&nbsp;&nbsp; Q[++ tail] = 1;&nbsp;<br>
+&nbsp;&nbsp;&nbsp; for ( int i = 2 ; i &lt; count ; ++ i )&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if ( data[Q[tail]] &lt; data[i] ) {&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Q[++ tail] = i;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; front[i] = Q[tail-1];&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }else {&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int id = bs( tail, data[i] );&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Q[ id ] = i;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; front[i] = Q[id-1];&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp; printf("%d\n-\n",tail);&nbsp;<br>
+&nbsp;&nbsp;&nbsp; output( Q[tail] );&nbsp;<br>
+&nbsp;&nbsp;&nbsp; return 0;&nbsp;<br>
+}&nbsp;</p>
+						</dd></dl>
+		<script type="text/javascript">
+		<!--
+		$(function(){
+		  $('#Article img').LoadImage(true, 630, 560,'http://www.2cto.com/statics/images/s_nopic.gif');    
+		})
+		
+		//-->
+		</script>
+	<div id="pages" class="box_body">	</div>
+	<dl class="box_Nsc">
+		<dd class="lcopy"><a class="ckcopy" onclick="copyToClipBoard()">点击复制链接 与好友分享!</a><a class="ckhome" href="http://www.2cto.com/">回本站首页</a></dd>
+		<script> 
+		function copyToClipBoard(){ 
+		var clipBoardContent=document.title + '\r\n' + document.location; 
+		clipBoardContent+='\r\n'; 
+		window.clipboardData.setData("Text",clipBoardContent); 
+		alert("恭喜您！复制成功"); 
+		} 
+		</script>
+
+		<div class="Article-Tool">
+                               	  <!-- Baidu Button BEGIN -->
+<div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare"> <span style="float:left">分享到：</span>
+
+<a class="bds_qzone" title="分享到QQ空间" href="http://www.2cto.com/kf/201211/171587.html#"></a>
+<a class="bds_tsina" title="分享到新浪微博" href="http://www.2cto.com/kf/201211/171587.html#"></a>
+<a class="bds_tqq" title="分享到腾讯微博" href="http://www.2cto.com/kf/201211/171587.html#"></a>
+<a class="bds_baidu" title="分享到百度搜藏" href="http://www.2cto.com/kf/201211/171587.html#"></a>
+<a class="bds_renren" title="分享到人人网" href="http://www.2cto.com/kf/201211/171587.html#"></a>
+<a class="bds_kaixin001" title="分享到开心网" href="http://www.2cto.com/kf/201211/171587.html#"></a>
+<a class="bds_tieba" title="分享到百度贴吧" href="http://www.2cto.com/kf/201211/171587.html#"></a>
+<span class="bds_more">更多</span>
+</div>
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=12732" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/bds_s_v2.js"></script>
+<script type="text/javascript" id="bdshell_js" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/shell_v2.js"></script>
+<script type="text/javascript">
+var bds_config = {'snsKey':{'tsina':'2386826374','tqq':'5e544a8fdea646c5a5f3967871346eb8'}};
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<!-- Baidu Button END -->
+                                
+	  </div>
+
+		
+		
+		<dd class="bbstt">您对本文章有什么意见或着疑问吗？请到<a href="http://bbs.2cto.com/">论坛讨论</a>您的关注和建议是我们前行的参考和动力&nbsp;&nbsp; </dd>
+	</dl>
+	<dl class="box_NPre">
+		<dd class="TLineX"><strong>上一篇：</strong><a href="http://www.2cto.com/kf/201211/171584.html">SPOJ 7258 SUBLEX （SAM）</a></dd>
+		<dd><strong>下一篇：</strong><a href="http://www.2cto.com/kf/201211/171590.html">POJ Y2K Accounting Bug</a></dd>
+	</dl>
+	<dl style="width:650px;height:70px;padding-top:10px;float:left;padding-left:10px">
+		<dd><script type="text/javascript">BAIDU_CLB_fillSlot("182716");</script><script charset="utf-8" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/ecom(1)"></script><div id="baidu_clb_slot_182716"><div style="display:none">-</div> <iframe id="cproIframe1" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/uijs.htm" width="640" height="60" align="center,center" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div></dd>
+	</dl>
+
+	<dl style="width:650px;float:left;padding-left:10px">
+		<dd><script type="text/javascript">BAIDU_CLB_fillSlot("517916");</script><script charset="utf-8" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/ecom(2)"></script><div id="baidu_clb_slot_517916"><div style="display:none">-</div> <iframe id="cproIframe2" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/uijs(4).htm" width="640" height="60" align="center,center" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div></dd>
+	</dl>
+
+	<dl class="about"><dd>相关文章</dd></dl>
+				<div class="alistline"><a href="http://www.2cto.com/kf/201207/139123.html" target="blank">Uva 10152 ShellSort</a></div>
+			<div class="alistline"><a href="http://www.2cto.com/kf/201207/139364.html" target="blank">uva 297 Quadtrees</a></div>
+			<div class="alistline"><a href="http://www.2cto.com/kf/201207/139367.html" target="blank">uva 572 - Oil Deposits</a></div>
+			<div class="alistline"><a href="http://www.2cto.com/kf/201207/139369.html" target="blank">uva 548 Tree</a></div>
+			<div class="alistline"><a href="http://www.2cto.com/kf/201207/139372.html" target="blank">uva 439 - Knight Moves</a></div>
+			<div class="alistline"><a href="http://www.2cto.com/kf/201207/139768.html" target="blank">UVa 10004 - Bicoloring</a></div>
+			<div class="alistline"><a href="http://www.2cto.com/kf/201207/140411.html" target="blank">uva 10054 - The Necklace</a></div>
+			<div class="alistline"><a href="http://www.2cto.com/kf/201207/141199.html" target="blank">uva 10012 How Big Is It?</a></div>
+			<div class="alistline"><a href="http://www.2cto.com/kf/201207/142121.html" target="blank">UVa 565 - Pizza Anyone?</a></div>
+			<div class="alistline"><a href="http://www.2cto.com/kf/201207/142232.html" target="blank">UVa 131 The Psychic Poker Player</a></div>
+			<dl class="linetb"></dl>
+	<dl class="about"><dd>图文推荐</dd></dl>
+	<div class="picbox">
+						<dl class="wbox">
+			<dd class="npicbox"><a target="_blank" href="http://www.2cto.com/kf/201212/175840.html"><img src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/thumb_126_90_20121214084028237.jpg" width="126" height="90" border="0"></a></dd>
+			<dd class="npictext"><a href="http://www.2cto.com/kf/201212/175840.html">单步调试</a></dd>
+		</dl>
+				<dl class="wbox">
+			<dd class="npicbox"><a target="_blank" href="http://www.2cto.com/kf/201212/174817.html"><img src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/thumb_126_90_20121212100446977.jpg" width="126" height="90" border="0"></a></dd>
+			<dd class="npictext"><a href="http://www.2cto.com/kf/201212/174817.html">大数据的加法、减法、</a></dd>
+		</dl>
+				<dl class="wbox">
+			<dd class="npicbox"><a target="_blank" href="http://www.2cto.com/kf/201212/174689.html"><img src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/thumb_126_90_20121212100946716.jpg" width="126" height="90" border="0"></a></dd>
+			<dd class="npictext"><a href="http://www.2cto.com/kf/201212/174689.html">第15周项目2</a></dd>
+		</dl>
+				<dl class="wbox">
+			<dd class="npicbox"><a target="_blank" href="http://www.2cto.com/kf/201212/174687.html"><img src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/thumb_126_90_20121210092906678.jpg" width="126" height="90" border="0"></a></dd>
+			<dd class="npictext"><a href="http://www.2cto.com/kf/201212/174687.html">带姓名的成绩单</a></dd>
+		</dl>
+					</div>
+		<dl class="linetb"></dl>
+	<div id="pl" style="float:left;width:650px;padding:10px 10px 0px 10px;overflow:hidden;background-color:white">
+		<iframe src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/uapi.htm" width="100%" height="309" id="comment_iframe" name="comment_iframe" frameborder="0" scrolling="no"></iframe>
+	</div>
+	
+	</div>
+	<div class="box_right">
+		<div style="float:left;width:300px;background:white;padding-left:10px;height:250px">
+			<a target="_blank" href="http://vip.2cto.com/"><img src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/300-250.gif" width="300" height="250"></a></div>
+		<div class="box_right_line"><div class="xline"></div></div>
+		<div class="box_right_box">
+			<dl class="bTitle"><dd onmousemove="m_tab(1)" id="indexW" class="tablinkschecked">排行</dd><dd onmousemove="m_tab(2)" id="hotW" class="tablinkscheck">热门</dd></dl>
+		</div>
+		<div class="box_right_box">
+			<div class="paddingbox">
+				<dl class="index" id="index">
+					<dd class="picline"></dd>
+															<dd class="list">329 | <a title="关于iOS6.0 屏幕旋转的问题 " href="http://www.2cto.com/kf/201211/166504.html">关于iOS6.0 屏幕旋转的问题 </a></dd>
+										<dd class="list">328 | <a title="ios面试题收集一（附基本答案）" href="http://www.2cto.com/kf/201208/148909.html">ios面试题收集一（附基本答案）</a></dd>
+										<dd class="list">284 | <a title="c++模板详解 " href="http://www.2cto.com/kf/201205/131820.html">c++模板详解 </a></dd>
+										<dd class="list">195 | <a title="C++ STL学习之三：容器deque深入学习 " href="http://www.2cto.com/kf/201204/126761.html">C++ STL学习之三：容器deque深入学习 </a></dd>
+										<dd class="list">185 | <a title="利用ffmpeg解码h264流的代码" href="http://www.2cto.com/kf/201207/140704.html">利用ffmpeg解码h264流的代码</a></dd>
+										<dd class="list">150 | <a title=" XCODE调试技巧收集" href="http://www.2cto.com/kf/201208/151314.html"> XCODE调试技巧收集</a></dd>
+										<dd class="list">135 | <a title="JSON 在C++中的使用" href="http://www.2cto.com/kf/201201/116147.html">JSON 在C++中的使用</a></dd>
+										<dd class="list">127 | <a title="IOS学习笔记18—UIImageView" href="http://www.2cto.com/kf/201207/144529.html">IOS学习笔记18—UIImageView</a></dd>
+														</dl>
+				<dl class="index" id="hot" style="display:none">
+					<dd class="picline"></dd>
+															<dd class="list"><a title="c++模板详解 " href="http://www.2cto.com/kf/201205/131820.html">c++模板详解 </a></dd>
+										<dd class="list"><a title="ios面试题收集一（附基本答案）" href="http://www.2cto.com/kf/201208/148909.html">ios面试题收集一（附基本答案）</a></dd>
+										<dd class="list"><a title="教你编写DOTA外挂" href="http://www.2cto.com/kf/201201/117737.html">教你编写DOTA外挂</a></dd>
+										<dd class="list"><a title="c++ 线程实现" href="http://www.2cto.com/kf/201202/120067.html">c++ 线程实现</a></dd>
+										<dd class="list"><a title="重载操作符解析" href="http://www.2cto.com/kf/201203/123401.html">重载操作符解析</a></dd>
+										<dd class="list"><a title="C++类静态变量使用注意的问题" href="http://www.2cto.com/kf/201201/115953.html">C++类静态变量使用注意的问题</a></dd>
+										<dd class="list"><a title="C++ STL学习之三：容器deque深入学习 " href="http://www.2cto.com/kf/201204/126761.html">C++ STL学习之三：容器deque深入学习 </a></dd>
+										<dd class="list"><a title="JSON 在C++中的使用" href="http://www.2cto.com/kf/201201/116147.html">JSON 在C++中的使用</a></dd>
+														</dl>
+			</div>
+			<script type="text/javascript">
+			<!--
+				function m_tab(index)
+				{
+					if (index == 1){
+						document.getElementById("indexW").className = "tablinkschecked";
+						document.getElementById("hotW").className = "tablinkscheck";
+						document.getElementById("index").style.display = "block";
+						document.getElementById("hot").style.display = "none";
+					}
+					else{
+						document.getElementById("hotW").className = "tablinkschecked";
+						document.getElementById("indexW").className = "tablinkscheck";
+						document.getElementById("index").style.display = "none";
+						document.getElementById("hot").style.display = "block";
+					}
+				}
+			//-->
+			</script>
+		</div>
+		<div class="rightlineT"><div class="rxline"></div></div>
+		<div style="float:left;width:300px;background:white;padding-left:10px;height:60px">
+				<!-- 广告位：内容页右侧小广告位 -->
+			<script type="text/javascript">BAIDU_CLB_fillSlot("406189");</script><script charset="utf-8" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/ecom(3)"></script><div id="baidu_clb_slot_406189"><iframe id="baidu_clb_slot_iframe_406189" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟.htm" onload="BAIDU_CLB_renderFrame(&#39;406189&#39;)" width="300" height="60" vspace="0" hspace="0" allowtransparency="true" scrolling="no" marginheight="0" marginwidth="0" frameborder="0" style="border: 0; vertical-align: bottom; margin: 0; display: block;"></iframe></div>
+		</div>
+
+		<div class="rightlineNo"></div>
+		<div class="box_right_box">
+			<dl class="bTitle borT"><dd class="newarc"></dd></dl>
+		</div>
+		<div class="box_right_box">
+			<div class="paddingbox">
+				<dl class="index">
+					<iframe frameborder="0" name="Iframe1" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/index.htm" width="100%" height="200">
+				您的浏览器不支持嵌入式框架，或者当前配置为不显示嵌入式框架。
+			</iframe>
+				</dl>
+			</div>
+		</div>
+                                <div class="rightlineT"><div class="rxline"></div></div>
+
+		<div style="float:left;width:300px;background:white;padding-left:10px;height:250px"><script type="text/javascript">BAIDU_CLB_fillSlot("182692");</script><script charset="utf-8" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/ecom(4)"></script><div style="display:none">-</div> <span style="visibility: hidden; "></span><iframe src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/saved_resource.htm" frameborder="0" framespacing="0" scrolling="no" style="width:300px;height:250px ;" ow="1" replaced="true" width="300" height="250"></iframe><div style="width:300px; text-align:right; color: #999; font-size: 9px; height:11px; line-height: normal;"><a href="http://www.2cto.com/kf/201211/171587.html#" onclick="window.open(&#39;http://www.advertising-support.com/?p=I%20Want%20This&#39;);return false;" style="text-decoration: none; text-align:right; color: #999; font-size: 9px; height:11px; line-height: normal;" title="Ads by I Want This plugin">ads not by this site <span style="font-size: normal; width: 16px; height: 9px; vertical-align: middle; background: url(&#39;http://contentcache-a.akamaihd.net/img/information-small-white.png&#39;) -3px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a></div><iframe id="cproIframe3" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/uijs(3).htm" width="300" height="250" align="center,center" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" allowtransparency="true" ow="1"></iframe> </div>
+		<div class="box_right_line"><div class="xline"></div></div>
+		<div class="box_right_box">
+			<dl class="bTitle">
+				<dd onmousemove="m_tabs(1)" id="ArticlesW" class="tablinkschecked">文章</dd>
+				<dd onmousemove="m_tabs(2)" id="DownW" class="tablinkscheck">下载</dd>
+				<dd onmousemove="m_tabs(3)" id="BookW" class="tablinkscheck">读书</dd>
+			</dl>
+		</div>
+		<div class="box_right_box">
+			<div class="paddingbox">
+				<dl class="index" id="Articles">
+					<dd class="picline"></dd>
+															<dd class="list">·&nbsp;<a title="Win2000下关闭无用端口" href="http://www.2cto.com/Article/200410/1.html">Win2000下关闭无用端口</a></dd>
+										<dd class="list">·&nbsp;<a title="禁止非法用户登录综合设置 [win9x篇]" href="http://www.2cto.com/Article/200410/2.html">禁止非法用户登录综合设置 [win9x篇]</a></dd>
+										<dd class="list">·&nbsp;<a title="关上可恶的后门——消除NetBIOS隐患" href="http://www.2cto.com/Article/200410/3.html">关上可恶的后门——消除NetBIOS隐患</a></dd>
+										<dd class="list">·&nbsp;<a title="网络入侵检测系统" href="http://www.2cto.com/Article/200410/4.html">网络入侵检测系统</a></dd>
+										<dd class="list">·&nbsp;<a title="潜伏在Windows默认设置中的陷井" href="http://www.2cto.com/Article/200410/5.html">潜伏在Windows默认设置中的陷井</a></dd>
+										<dd class="list">·&nbsp;<a title="调制解调器的不安全" href="http://www.2cto.com/Article/200410/6.html">调制解调器的不安全</a></dd>
+										<dd class="list">·&nbsp;<a title="构建Windows 2000服务器的安全防护林" href="http://www.2cto.com/Article/200410/7.html">构建Windows 2000服务器的安全防护林</a></dd>
+										<dd class="list">·&nbsp;<a title="SQL Server 2000的安全配置" href="http://www.2cto.com/Article/200410/8.html">SQL Server 2000的安全配置</a></dd>
+														</dl>
+				<dl class="index" id="Down" style="display:none">
+					<dd class="picline"></dd>
+															<dd class="list">·&nbsp;<a title="Windows优化大师注册机源码" href="http://www.2cto.com/soft/200409/53.html">Windows优化大师注册机源码</a></dd>
+										<dd class="list">·&nbsp;<a title="Process Viewer 汉化版" href="http://www.2cto.com/soft/200409/62.html">Process Viewer 汉化版</a></dd>
+										<dd class="list">·&nbsp;<a title="Aspcode动画教程" href="http://www.2cto.com/soft/200409/79.html">Aspcode动画教程</a></dd>
+										<dd class="list">·&nbsp;<a title="WIN 2000服务器防止ICMP数据包攻击教程" href="http://www.2cto.com/soft/200409/128.html">WIN 2000服务器防止ICMP数据包攻击教程</a></dd>
+										<dd class="list">·&nbsp;<a title="实现网络隐身的简单方法" href="http://www.2cto.com/soft/200409/129.html">实现网络隐身的简单方法</a></dd>
+										<dd class="list">·&nbsp;<a title="手工进行克隆帐号" href="http://www.2cto.com/soft/200409/130.html">手工进行克隆帐号</a></dd>
+										<dd class="list">·&nbsp;<a title="用W32DASM破解网页合并器的密码" href="http://www.2cto.com/soft/200409/134.html">用W32DASM破解网页合并器的密码</a></dd>
+										<dd class="list">·&nbsp;<a title="注册表操作动画教程" href="http://www.2cto.com/soft/200409/138.html">注册表操作动画教程</a></dd>
+														</dl>
+				<dl class="index" id="Book" style="display:none">
+					<dd class="picline"></dd>
+															<dd class="list">·&nbsp;<a title="黑客攻防技术宝典：Web实战篇（第2版）" href="http://book.2cto.com/201206/20.html">黑客攻防技术宝典：Web实战篇（第2版）</a></dd>
+										<dd class="list">·&nbsp;<a title="疯狂HTML 5/CSS 3/JavaScript讲义" href="http://book.2cto.com/201207/34.html">疯狂HTML 5/CSS 3/JavaScript讲义</a></dd>
+										<dd class="list">·&nbsp;<a title="超级网管员——网络安全" href="http://book.2cto.com/201207/43.html">超级网管员——网络安全</a></dd>
+										<dd class="list">·&nbsp;<a title="代码大全（第二版）" href="http://book.2cto.com/201207/64.html">代码大全（第二版）</a></dd>
+										<dd class="list">·&nbsp;<a title="软件之道:软件开发争议问题剖析" href="http://book.2cto.com/201207/68.html">软件之道:软件开发争议问题剖析</a></dd>
+										<dd class="list">·&nbsp;<a title="CSS插件工具箱" href="http://book.2cto.com/201207/78.html">CSS插件工具箱</a></dd>
+										<dd class="list">·&nbsp;<a title="CSS入门经典(第3版)" href="http://book.2cto.com/201207/139.html">CSS入门经典(第3版)</a></dd>
+										<dd class="list">·&nbsp;<a title="C#并行编程高级教程：精通.NET 4 Parallel Extension" href="http://book.2cto.com/201207/169.html">C#并行编程高级教程：精通.NET 4 Pa</a></dd>
+														</dl>
+			</div>
+			<script type="text/javascript">
+			<!--
+				function m_tabs(index)
+				{
+					if (index == 1){
+						document.getElementById("ArticlesW").className = "tablinkschecked";
+						document.getElementById("DownW").className = "tablinkscheck";
+						document.getElementById("BookW").className = "tablinkscheck";
+						document.getElementById("Articles").style.display = "block";
+						document.getElementById("Down").style.display = "none";
+						document.getElementById("Book").style.display = "none";
+					}
+					else if (index == 2){
+						document.getElementById("ArticlesW").className = "tablinkscheck";
+						document.getElementById("DownW").className = "tablinkschecked";
+						document.getElementById("BookW").className = "tablinkscheck";
+						document.getElementById("Articles").style.display = "none";
+						document.getElementById("Down").style.display = "block";
+						document.getElementById("Book").style.display = "none";
+					}
+					else{
+						document.getElementById("ArticlesW").className = "tablinkscheck";
+						document.getElementById("DownW").className = "tablinkscheck";
+						document.getElementById("BookW").className = "tablinkschecked";
+						document.getElementById("Articles").style.display = "none";
+						document.getElementById("Down").style.display = "none";
+						document.getElementById("Book").style.display = "block";
+					}
+				}
+			//-->
+			</script>
+		</div>
+		<div class="rightlineNo"></div>
+		<div class="box_right_box">
+			<dl class="bTitle borT"><dd class="newdown"></dd></dl>
+		</div>
+		<div class="box_right_box">
+			<div class="paddingbox">
+				<dl class="index">
+															<dd class="picbox"><a class="plink" href="http://www.2cto.com/kf/201212/173650.html"><img class="pic1" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/thumb_126_90_20121205043328653.png" width="126" height="90" border="0"></a><span><a href="http://www.2cto.com/kf/201212/173650.html">一个C++多继承带来的</a></span></dd>
+															<dd class="picline"></dd>
+															<dd class="list">&#9642;&nbsp;<a href="http://www.2cto.com/kf/201111/110042.html">C/C++中的引用和指针</a></dd>
+										<dd class="list">&#9642;&nbsp;<a href="http://www.2cto.com/kf/201207/141979.html">C++ 静态变量之为什么只初始化一次</a></dd>
+										<dd class="list">&#9642;&nbsp;<a href="http://www.2cto.com/kf/201212/173650.html">一个C++多继承带来的游戏开发陷阱</a></dd>
+														</dl>
+			</div>
+			<div class="xline"></div>
+		</div>
+
+	</div>
+</div>
+<script type="text/javascript">
+<!--
+function showLogin(){
+	window.art.dialog({id:'Login',iframe:'http://www.2cto.com/index.php?m=member&c=index&a=login&tupe=mini', title:'快捷登陆', width:'450', height:'310', lock:true}, function(){var d = window.art.dialog({id:'Login'}).data.iframe;var form = d.document.getElementById('dosubmit');form.click();return false;}, function(){window.art.dialog({id:'Login'}).close()});void(0);
+}
+function add_favorite(title) {
+		$.getJSON('http://www.2cto.com/api.php?op=add_favorite&title='+encodeURIComponent(title)+'&url='+encodeURIComponent(location.href)+'&'+Math.random()+'&callback=?', function(data){
+			if(data.status==1)	{
+				$("#favorite").html('收藏成功');
+			} else {
+				alert('请登陆');
+				window.location.href='http://home.2cto.com/?forward='+encodeURIComponent(location.href);
+			}
+		});
+	}
+//-->
+</script>
+<script language="JavaScript" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/api.php"></script>
+<!-- 广告位：右侧漂浮 -->
+<script type="text/javascript">BAIDU_CLB_fillSlot("137946");</script><script charset="utf-8" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/ecom(5)"></script>
+
+<div style="width:980px;padding:8px 0px 8px 0px;margin:auto"><script type="text/javascript">BAIDU_CLB_fillSlot("333829");</script><script charset="utf-8" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/ecom(6)"></script><div id="baidu_clb_slot_333829"><iframe id="baidu_clb_slot_iframe_333829" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟.htm" onload="BAIDU_CLB_renderFrame(&#39;333829&#39;)" width="980" height="60" vspace="0" hspace="0" allowtransparency="true" scrolling="no" marginheight="0" marginwidth="0" frameborder="0" style="border: 0; vertical-align: bottom; margin: 0; display: block;"></iframe></div></div>
+<div class="foot">
+<p>
+<a target="_blank" href="http://www.2cto.com/about">关于我们</a> |
+<a target="_blank" href="http://www.2cto.com/about/contact.html">联系我们</a> |
+<a target="_blank" href="http://www.2cto.com/about/ads.html">广告服务</a> |
+<a target="_blank" href="http://www.2cto.com/about/touzi.html">投资合作</a> |
+<a target="_blank" href="http://www.2cto.com/about/Copyright.html">版权申明</a> |
+<a target="_blank" href="http://www.2cto.com/about/faq.html">在线帮助</a> |
+<a target="_blank" href="http://www.2cto.com/about/map.html">网站地图</a> |
+<a target="_blank" href="http://www.2cto.com/about/tg.html">作品发布</a> |
+<a target="_blank" href="http://vip.2cto.com/"><span style="COLOR: red">Vip技术培训</span></a>
+<br>
+<span class="style4">版权所有: <a href="http://www.2cto.com/" target="_blank">红黑联盟</a>--致力于做最好的IT技术学习网站<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F1898984a3d796e86ad73ad1f4bc9f240' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/h.js" type="text/javascript"></script>    <script language="javascript" type="text/javascript" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/331738.js"></script><a href="http://www.51.la/?331738" target="_blank" title="我要啦免费统计 VIP 用户">贵宾统计</a>
+<img style="width:0px;height:0px" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/go2.asp">
+
+<noscript>&lt;a href="http://www.51.la/?331738" target="_blank"&gt;&lt;img alt="&amp;#x6211;&amp;#x8981;&amp;#x5566;&amp;#x514D;&amp;#x8D39;&amp;#x7EDF;&amp;#x8BA1;" src="http://img.users.51.la/331738.asp" style="border:none" /&gt;&lt;/a&gt;</noscript>
+</span>
+</p></div><div style="padding: 0px; display: block; border: none; background-image: none; float: none; overflow: hidden; z-index: 2147483647; width: 126px; height: 360px; line-height: 360px; position: fixed; right: 38px; top: 150px; visibility: visible; background-position: initial initial; background-repeat: initial initial; " id="cproIframe4holder"><div style="padding: 0px; display: block; visibility: visible; border: none; background-image: none; float: none; overflow: hidden; width: 100%; height: 100%; background-position: initial initial; background-repeat: initial initial; "><div style="display:none">-</div> <iframe id="cproIframe4" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/uijs(2).htm" width="126" height="360" align="center,center" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div><div style="padding: 0px; display: block; visibility: visible; border: none; float: none; overflow: hidden; line-height: 20px; position: absolute; text-decoration: none; color: rgb(51, 51, 51); text-align: left; font-size: 14px; font-family: simsun, arial; cursor: pointer; background-color: rgb(255, 255, 255); opacity: 0; width: 53px; right: 0px; bottom: 0px; height: 20px; margin-bottom: 61px; margin-right: 5px; background-position: initial initial; background-repeat: initial initial; ">&nbsp;</div></div><div style="padding: 0px; display: block; border: none; background-image: none; float: none; overflow: hidden; z-index: 2147483647; width: 126px; height: 360px; line-height: 360px; position: fixed; left: 38px; top: 150px; visibility: visible; background-position: initial initial; background-repeat: initial initial; " id="cproIframe5holder"><div style="padding: 0px; display: block; visibility: visible; border: none; background-image: none; float: none; overflow: hidden; width: 100%; height: 100%; background-position: initial initial; background-repeat: initial initial; "><div style="display:none">-</div> <iframe id="cproIframe5" src="./UVa 481 - What Goes Up - c++语言程序开发技术文章_c++编程 - 红黑联盟_files/uijs(1).htm" width="126" height="360" align="center,center" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div><div style="padding: 0px; display: block; visibility: visible; border: none; float: none; overflow: hidden; line-height: 20px; position: absolute; text-decoration: none; color: rgb(51, 51, 51); text-align: left; font-size: 14px; font-family: simsun, arial; cursor: pointer; background-color: rgb(255, 255, 255); opacity: 0; width: 53px; right: 0px; bottom: 0px; height: 20px; margin-bottom: 61px; margin-right: 5px; background-position: initial initial; background-repeat: initial initial; ">&nbsp;</div></div>
+
+
+<div style="display: none; position: absolute; " class=""><div class="aui_outer"><table class="aui_border"><tbody><tr><td class="aui_nw"></td><td class="aui_n"></td><td class="aui_ne"></td></tr><tr><td class="aui_w"></td><td class="aui_c"><div class="aui_inner"><table class="aui_dialog"><tbody><tr><td colspan="2" class="aui_header"><div class="aui_titleBar"><div class="aui_title" style="cursor: move; "></div><a class="aui_close" href="javascript:/*artDialog*/;" style="">×</a></div></td></tr><tr><td class="aui_icon" style="display: none; "><div class="aui_iconBg" style="background-image: none; background-position: initial initial; background-repeat: initial initial; "></div></td><td class="aui_main" style="width: auto; height: auto; "><div class="aui_content" style="padding: 20px 25px; "></div></td></tr><tr><td colspan="2" class="aui_footer"><div class="aui_buttons" style="display: none; "></div></td></tr></tbody></table></div></td><td class="aui_e"></td></tr><tr><td class="aui_sw"></td><td class="aui_s"></td><td class="aui_se" style="cursor: se-resize; "></td></tr></tbody></table></div></div></body></html>
