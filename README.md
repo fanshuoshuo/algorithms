@@ -4,4 +4,4 @@
 
 # review some algorithm  
 
-# C++ and matlab 
+# C++ 
