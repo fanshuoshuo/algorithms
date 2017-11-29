@@ -3,7 +3,6 @@ author：shuoshuofan
 date  : 20170323
 剑指offer纪念版 2.3.3 链表，从尾到头打印链表
 ****************************/
-
 #include <iostream>
 #include <cstdlib>
 #include <string>
@@ -93,8 +92,6 @@ void Solution::printListReversingly_UsingStack(ListNode* pHead){
 int main(){
 
     /**建立一个指向链表的指针有如下三种方法
-
-	
 	//ListNode *test=new ListNode(4);
 	//ListNode *test;                 这样建立链表指针会让指针随机指向一个地址，而不是说空地址
 	//ListNode *test=NULL;            这时候直接输出test->val程序崩溃
@@ -112,7 +109,6 @@ int main(){
 	//print List reversingly
 	s.printListReversingly_Recursively(test);
 	//delete Node 7 and 
-
 	s.RemoveNode(&test,7);
 	s.printListReversingly_Recursively(test);
 

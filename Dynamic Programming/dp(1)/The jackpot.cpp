@@ -24,7 +24,6 @@ void Thejackpot::initial(int x){
 }
 void Thejackpot::readcase(){
      int a;
-     
      for(int i=0;i<n;i++){
          cin>>a;
          v.push_back(a);
@@ -46,7 +45,6 @@ void Thejackpot::outResult(){
          cout<<"The maximum winning streak is "<<maxn<<"."<<endl;
      }
 }
-
 int main(){
   Thejackpot  tj;
   int n;
